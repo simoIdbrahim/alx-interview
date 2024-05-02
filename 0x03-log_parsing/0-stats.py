@@ -1,50 +1,48 @@
 #!/usr/bin/python3
-"""Log parsing"""
+"""
+Log parsing
+"""
 
 
-import sys
-
-
-def parse_logs():
+def parseLogs():
     """
-    Function to parse logs
+    parseLogs function
     """
-    line_number = 0
-    file_size = 0
-    status_codes = {'200': 0, '301': 0, '400': 0, '401': 0, '403': 0,
-                    '404': 0, '405': 0, '500': 0}
-
+    stdin = __import__('sys').stdin
+    num = 0
+    size = 0
+    status_c = {}
+    status = ('200', '301', '400', '401', '403', '404', '405', '500')
     try:
-        for line in sys.stdin:
-            line_number += 1
-            parts = line.split()
+        for line in stdin:
+            num += 1
+            line = line.split()
             try:
-                file_size += int(parts[-1])
-                if parts[-2] in status_codes:
-                    status_codes[parts[-2]] += 1
+                size += int(line[-1])
+                if line[-2] in status:
+                    try:
+                        status_c[line[-2]] += 1
+                    except KeyError:
+                        status_c[line[-2]] = 1
             except (IndexError, ValueError):
                 pass
-
-            if line_number == 10:
-                print_report(file_size, status_codes)
-                line_number = 0
-
-        print_report(file_size, status_codes)
-
-    except KeyboardInterrupt:
-        print_report(file_size, status_codes)
+            if num == 10:
+                report(size, status_c)
+                num = 0
+        report(size, status_c)
+    except KeyboardInterrupt as e:
+        report(size, status_c)
         raise
 
 
-def print_report(file_size, status_codes):
+def report(size, status_c):
     """
-    Function to print report
+    report function
     """
-    print("File size: {}".format(file_size))
-    for code, count in sorted(status_codes.items()):
-        print("{}: {}".format(code, count))
+    print("File size: {}".format(size))
+    for key, value in sorted(status_c.items()):
+        print("{}: {}".format(key, value))
 
 
 if __name__ == '__main__':
-    parse_logs()
-
+    parseLogs()
