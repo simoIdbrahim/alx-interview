@@ -1,7 +1,9 @@
 #!/usr/bin/python3
-""" Log parsing """
+"""Log parsing"""
+
 
 import sys
+
 
 def parse_logs():
     """
@@ -9,7 +11,8 @@ def parse_logs():
     """
     line_number = 0
     file_size = 0
-    status_codes = {'200': 0, '301': 0, '400': 0, '401': 0, '403': 0, '404': 0, '405': 0, '500': 0}
+    status_codes = {'200': 0, '301': 0, '400': 0, '401': 0, '403': 0,
+                    '404': 0, '405': 0, '500': 0}
 
     try:
         for line in sys.stdin:
@@ -32,6 +35,7 @@ def parse_logs():
         print_report(file_size, status_codes)
         raise
 
+
 def print_report(file_size, status_codes):
     """
     Function to print report
@@ -40,5 +44,7 @@ def print_report(file_size, status_codes):
     for code, count in sorted(status_codes.items()):
         print("{}: {}".format(code, count))
 
+
 if __name__ == '__main__':
     parse_logs()
+
