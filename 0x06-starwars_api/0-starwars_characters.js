@@ -13,7 +13,7 @@ request.get({ url: url }, function (err, res, body) {
   }
 });
 
-function order (characters) {
+function order(characters) {
   if (characters.length > 0) {
     request.get({ url: characters.shift() }, function (err, res, body) {
       if (!err) {
